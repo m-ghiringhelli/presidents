@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import { Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { usePresidents } from '../../hooks/usePresidents'
+import Detail from '../Detail/Detail';
 
 export default function List() {
-  const fetchData = () => {
-    const { presidents, loading } = usePresidents();
-  }
+  const { presidents, loading } = usePresidents();
 
   return (
     <>
-      LIST
-      {/* {presidents.map((president) => (
+      {presidents.map((president) => (
         <div key={president.id}>
-          <h1>{president.name}</h1>
-          <img src={president.photo}/>
-          <p>{president.yearsInOffice}</p>
-          <p>{president.vicePresidents}</p>
+          <Link to={`/${president.id}`}>
+            <p>{president.name}</p>
+          </Link>
         </div>
-      ))} */}
+      ))}
+      <Switch>
+      <Route path='/:id'>
+        <Detail />
+      </Route>
+
+      </Switch>
     </>
   )
 }

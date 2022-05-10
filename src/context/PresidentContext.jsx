@@ -12,7 +12,6 @@ export function ProvidePresidents({ children }) {
   useEffect(() => {
     const getData = async () => {
       const data = await fetchPresidents();
-      console.log(data);
       setPresidents(data);
     }
     getData();
