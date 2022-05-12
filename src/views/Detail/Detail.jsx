@@ -13,25 +13,19 @@ export default function Detail() {
 
   
   useEffect(() => {
-    
-    const findPresidentById = () => {
-      const selectedPresident = presidents.find((president) => (
+    if (loading) return;
+    const selectedPresident = presidents.find((president) => (
         president.id === +id
         ));
         setPresident(selectedPresident);
         // console.log(selectedPresident);
-      }
-      const timer = setTimeout(() => {
-        findPresidentById();
-      }, 2000);
-      return () => clearTimeout(timer);
-  }, [id]);
+  }, [id, loading]);
   
   // console.log(id);
 
   return (
     <>
-      {/* {president.id} */}
+      {loading ? <p>Loading president...</p> : <p>{president.name}</p>}
     </>
   )
 }

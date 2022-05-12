@@ -11,8 +11,10 @@ export function ProvidePresidents({ children }) {
   // fetch data
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       const data = await fetchPresidents();
       setPresidents(data);
+      setLoading(false);
     }
     getData();
   }, []);
