@@ -7,10 +7,7 @@ import { usePresidents } from '../../hooks/usePresidents'
 export default function Detail() {
   const { presidents, loading } = usePresidents();
   const { id } = useParams();
-  const history = useHistory();
   const [president, setPresident] = useState({});
-  const location = useLocation();
-
   
   useEffect(() => {
     if (loading) return;
@@ -18,14 +15,19 @@ export default function Detail() {
         president.id === +id
         ));
         setPresident(selectedPresident);
-        // console.log(selectedPresident);
   }, [id, loading]);
   
-  // console.log(id);
-
   return (
     <>
-      {loading ? <p>Loading president...</p> : <p>{president.name}</p>}
+      {loading ? 
+        <p>Loading president...</p> : 
+        <>
+          <h1>{president.name}</h1>
+          <p>#{president.id}</p>
+          <img src={president.photo} />
+          <p>{president.yearsInOffice}</p>
+        </>
+      }
     </>
   )
 }
