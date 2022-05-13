@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { fetchPresidents } from '../services/presidents';
-
+ 
 export const presidentContext = createContext();
 
 export function ProvidePresidents({ children }) {

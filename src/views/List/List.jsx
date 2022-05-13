@@ -8,7 +8,7 @@ import style from './List.css';
 
 export default function List() {
   const { path, url } = useRouteMatch();
-  const { presidents } = usePresidents();
+  const { presidents, loading } = usePresidents();
 
   return (
     <div className={style.grid}>

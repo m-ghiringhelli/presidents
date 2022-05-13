@@ -24,7 +24,7 @@ export default function Detail() {
         <>
           <h1>{president.name}</h1>
           <p>#{president.id}</p>
-          <img src={president.photo} />
+          <img alt={`Portrait of ${president.name}`} src={president.photo} />
           <p>{president.yearsInOffice}</p>
         </>
       }

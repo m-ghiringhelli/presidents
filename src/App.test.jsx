@@ -1,36 +1,50 @@
-import { screen, render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, render, act, findByText } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom'
 import App from './App';
-import { act } from 'react-dom/test-utils';
-import { presidentContext } from './context/PresidentContext';
+import { ProvidePresidents } from './context/PresidentContext';
 
 describe('App', () => {
-  it('tells user page is about presidents', () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    )
-    expect(screen.getByText(/presidents/i)).toBeInTheDocument();
-  })
-  it('displays a list of presidents', async () => {
-    
+  it('starts on detail and shows george washington', async () => {
+    act(() => {
+      render(
+        <ProvidePresidents>
+          <MemoryRouter initialEntries={['/', '/list', '/list/1']} initialIndex={2}>
+            <App />
+          </MemoryRouter>
+      </ProvidePresidents>
+      )
+    })
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    const portrait = await screen.findByAltText(/washington/i, {}, {timeout: 4000});
+    expect(portrait).toBeInTheDocument();
   })
 })
 
-// describe('App', () => {
-//   it('shows a president name', async () => {
-//     act(() => {
-//         render(
-//           <presidentContext.Provider value={ }>
-//             <MemoryRouter>
-//               <App />
-//             </MemoryRouter>
-//           </presidentContext.Provider>
-//         );
-//     });
-//     const george = await screen.findByText(/george/i, {}, {timeout: 4000});
-//     screen.debug();
-//     expect(george).toBeInTheDocument();
-//   });
-// })
+beforeEach(() => {
+  act(() => {
+    render(
+      <ProvidePresidents>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </ProvidePresidents>
+    )
+  })
+})
+
+it('tells user page is about presidents', () => {
+  expect(screen.getByRole('heading', {
+    name: /presidents/i
+  })).toBeInTheDocument();
+})
+it('displays a list of presidents when visiting /list', async () => {
+  const listLink = screen.getByRole('link', {
+    name: /click here to view the presidents/i
+  })
+  userEvent.click(listLink);
+  const george = await screen.findByText(/george/i, {}, {timeout: 4000});
+  expect(george).toBeInTheDocument();
+  const presidents = await screen.findAllByRole('link');
+  expect(presidents.length).toEqual(2);
+})
